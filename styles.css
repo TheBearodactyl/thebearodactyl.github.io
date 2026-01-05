@@ -6,8 +6,10 @@ body {
 	color: #e0def4;
 }
 
-.title {
+.header {
 	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .google-sans {
