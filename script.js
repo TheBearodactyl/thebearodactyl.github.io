@@ -1,4 +1,4 @@
-var title = document.getElementById("title");
-title === null || title === void 0 ? void 0 : title.addEventListener("click", function () {
-    console.log("woah");
+var discord_link = document.getElementById("discord-link");
+discord_link === null || discord_link === void 0 ? void 0 : discord_link.addEventListener("click", function () {
+    navigator.clipboard.writeText("@thebearodactyl");
 });

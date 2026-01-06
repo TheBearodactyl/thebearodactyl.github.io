@@ -1,5 +1,5 @@
-const title = document.getElementById("title");
+const discord_link = document.getElementById("discord-link");
 
-title?.addEventListener("click", () => {
-	console.log("woah");
+discord_link?.addEventListener("click", () => {
+	navigator.clipboard.writeText("@thebearodactyl");
 });

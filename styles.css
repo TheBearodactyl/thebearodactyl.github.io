@@ -1,21 +1,25 @@
 @import url("https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap");
 
 body {
-	font-family: "Sofia", sans-serif;
-	background-color: #232136;
-	color: #e0def4;
-}
-
-.header {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.google-sans {
 	font-family: "Google Sans", sans-serif;
 	font-optical-sizing: auto;
 	font-weight: 200;
 	font-style: normal;
 	font-variation-settings: "GRAD" 0;
+	background-color: #191724;
+	color: #e0def4;
+}
+
+#discord-link {
+	text-decoration: underline;
+}
+
+.fake-link {
+	text-decoration: underline;
+	cursor: pointer;
+	color: blue;
+}
+
+.rust-img {
+	width: 200px;
 }
