@@ -153,7 +153,7 @@ body {
 
 .carousel-btn {
 	padding: 8px 12px;
-	background: rgba(255, 255, 255, 0.2);
+	background: var(--bg-color);
 	color: var(--text-color);
 	border: 1px solid var(--text-color);
 	cursor: pointer;
