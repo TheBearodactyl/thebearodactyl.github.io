@@ -87,11 +87,12 @@ function animate_title(base_title, interval_ms) {
         document.title = base_title;
     };
 }
-var stop_title_anim = animate_title("the motherfucking bearodactyl", 100);
+var stop_title_anim = animate_title("the motherfucking bearodactyl", 200);
 var things_i_like = [
     { src: "./assets/images/reggie.png", caption: "Reggie (of course)" },
     { src: "./assets/images/rust.gif", caption: "Rust (the language)" },
     { src: "./assets/images/spaghetti.png", caption: "Spaghetti" },
+    { src: "./assets/images/op.png", caption: "One Piece" },
 ];
 document.addEventListener("DOMContentLoaded", function () {
     new ImageCarousel("things-i-like", things_i_like);

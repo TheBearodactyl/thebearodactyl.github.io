@@ -12,7 +12,7 @@ local function has_flag(name)
 end
 
 --- @param name string the flag to get the value of
---- @return any val the value passed to the flag
+--- @return string|nil val the value passed to the flag
 local function get_flag(name)
 	if has_flag(name) then
 		for i = 1, #arg do
@@ -56,13 +56,23 @@ local function print_status(succeeded)
 	)
 end
 
-local function build_script()
+local build_delay = tonumber(get_flag("--delay")) or 3000
+local only_once = has_flag("--once") or false
+
+local function build_script(once)
 	local _, _, code = os.execute("tsc script.ts --lib es2024,dom > nul")
 	print_status(code ~= 2 and 1 or 0)
-	wait(get_flag("--delay") or 3000)
+	if not once then
+		wait(build_delay)
+	end
 end
 
 print("")
-while true do
+
+if only_once then
 	build_script()
+else
+	while true do
+		build_script()
+	end
 end

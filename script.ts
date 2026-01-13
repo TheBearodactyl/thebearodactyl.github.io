@@ -116,12 +116,13 @@ function animate_title(
 	};
 }
 
-const stop_title_anim = animate_title("the motherfucking bearodactyl", 100);
+const stop_title_anim = animate_title("the motherfucking bearodactyl", 200);
 
 const things_i_like: SlideData[] = [
 	{ src: "./assets/images/reggie.png", caption: "Reggie (of course)" },
 	{ src: "./assets/images/rust.gif", caption: "Rust (the language)" },
 	{ src: "./assets/images/spaghetti.png", caption: "Spaghetti" },
+	{ src: "./assets/images/op.png", caption: "One Piece" },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
