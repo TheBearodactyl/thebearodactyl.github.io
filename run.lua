@@ -2,7 +2,7 @@
 --- @param name string
 --- @return boolean used
 local function has_flag(name)
-	for i, v in ipairs(arg) do
+	for _, v in ipairs(arg) do
 		if v == name then
 			return true
 		end

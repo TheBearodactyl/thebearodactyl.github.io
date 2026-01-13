@@ -1,6 +1,6 @@
 const discord_link = document.getElementById("discord-link");
 const hard_to_read = document.getElementById("hardtoread");
-const alliwantaudio = new Audio("assets/alliwant.mp3");
+const alliwantaudio = new Audio("assets/audio/alliwant.mp3");
 var is_hard_to_read = false;
 
 interface SlideData {
@@ -40,6 +40,7 @@ class ImageCarousel {
 
 			const img = document.createElement("img");
 			img.src = slide.src;
+			img.alt = slide.caption;
 			img.classList.add("carousel-image");
 
 			if (idx === 0) {
@@ -50,7 +51,7 @@ class ImageCarousel {
 
 			const caption = document.createElement("div");
 			caption.classList.add("carousel-caption");
-			caption.innerText = slide.caption;
+			caption.textContent = slide.caption;
 
 			slide_el.append(img, caption);
 			this.slide_elements.push(slide_el);
@@ -63,13 +64,19 @@ class ImageCarousel {
 
 	private create_controls(): void {
 		const nav = document.createElement("nav");
+		nav.classList.add("carousel-nav");
+
 		const prev_btn = document.createElement("button");
 		const next_btn = document.createElement("button");
 
-		prev_btn.innerText = "<";
+		prev_btn.classList.add("carousel-btn", "carousel-btn-prev");
+		prev_btn.setAttribute("aria-label", "Previous slide");
+		prev_btn.textContent = "<";
 		prev_btn.onclick = () => this.move(-1);
 
-		next_btn.innerText = ">";
+		next_btn.classList.add("carousel-btn", "carousel-btn-next");
+		next_btn.setAttribute("aria-label", "Next slide");
+		next_btn.textContent = ">";
 		next_btn.onclick = () => this.move(1);
 
 		nav.append(prev_btn, next_btn);
@@ -77,31 +84,44 @@ class ImageCarousel {
 	}
 
 	private move(direction: number): void {
-		const old_idx = this.curr_idx;
+		this.slide_elements[this.curr_idx].classList.remove("active");
 
 		this.curr_idx =
 			(this.curr_idx + direction + this.slides.length) %
 			this.slides.length;
-		this.slide_elements.forEach((el, idx) => {
-			el.classList.remove("active", "prev-slide");
 
-			if (idx === this.curr_idx) {
-				el.classList.add("active");
-			} else if (
-				idx === old_idx ||
-				(direction > 0 && idx < this.curr_idx) ||
-				(direction < 0 && idx > this.curr_idx)
-			) {
-				el.classList.add("prev-slide");
-			}
-		});
+		this.slide_elements[this.curr_idx].classList.add("active");
 	}
 }
 
+function randomize_case(input: string): string {
+	return Array.from(input)
+		.map((char) =>
+			Math.random() < 0.5 ? char.toLowerCase() : char.toUpperCase(),
+		)
+		.join("");
+}
+
+function animate_title(
+	base_title: string,
+	interval_ms: number = 200,
+): () => void {
+	const interval_id: ReturnType<typeof setInterval> = setInterval(() => {
+		document.title = randomize_case(base_title);
+	}, interval_ms);
+
+	return () => {
+		clearInterval(interval_id);
+		document.title = base_title;
+	};
+}
+
+const stop_title_anim = animate_title("the motherfucking bearodactyl", 100);
+
 const things_i_like: SlideData[] = [
-	{ src: "./assets/reggie.png", caption: "Reggie (of course)" },
-	{ src: "./assets/rust.gif", caption: "Rust (the language)" },
-	{ src: "./assets/spaghetti.png", caption: "Spaghetti" },
+	{ src: "./assets/images/reggie.png", caption: "Reggie (of course)" },
+	{ src: "./assets/images/rust.gif", caption: "Rust (the language)" },
+	{ src: "./assets/images/spaghetti.png", caption: "Spaghetti" },
 ];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -112,7 +132,7 @@ discord_link?.addEventListener("click", () => {
 	navigator.clipboard.writeText("@thebearodactyl");
 });
 
-function set_css_var(v: string, val: string) {
+function set_css_var(v: string, val: string): void {
 	document.documentElement.style.setProperty(v, val);
 }
 

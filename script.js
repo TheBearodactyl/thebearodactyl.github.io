@@ -1,6 +1,6 @@
 var discord_link = document.getElementById("discord-link");
 var hard_to_read = document.getElementById("hardtoread");
-var alliwantaudio = new Audio("assets/alliwant.mp3");
+var alliwantaudio = new Audio("assets/audio/alliwant.mp3");
 var is_hard_to_read = false;
 var ImageCarousel = /** @class */ (function () {
     function ImageCarousel(container_id, slides) {
@@ -26,6 +26,7 @@ var ImageCarousel = /** @class */ (function () {
             }
             var img = document.createElement("img");
             img.src = slide.src;
+            img.alt = slide.caption;
             img.classList.add("carousel-image");
             if (idx === 0) {
                 img.setAttribute("fetchpriority", "high");
@@ -35,7 +36,7 @@ var ImageCarousel = /** @class */ (function () {
             }
             var caption = document.createElement("div");
             caption.classList.add("carousel-caption");
-            caption.innerText = slide.caption;
+            caption.textContent = slide.caption;
             slide_el.append(img, caption);
             _this.slide_elements.push(slide_el);
             fragment.appendChild(slide_el);
@@ -46,39 +47,51 @@ var ImageCarousel = /** @class */ (function () {
     ImageCarousel.prototype.create_controls = function () {
         var _this = this;
         var nav = document.createElement("nav");
+        nav.classList.add("carousel-nav");
         var prev_btn = document.createElement("button");
         var next_btn = document.createElement("button");
-        prev_btn.innerText = "<";
+        prev_btn.classList.add("carousel-btn", "carousel-btn-prev");
+        prev_btn.setAttribute("aria-label", "Previous slide");
+        prev_btn.textContent = "<";
         prev_btn.onclick = function () { return _this.move(-1); };
-        next_btn.innerText = ">";
+        next_btn.classList.add("carousel-btn", "carousel-btn-next");
+        next_btn.setAttribute("aria-label", "Next slide");
+        next_btn.textContent = ">";
         next_btn.onclick = function () { return _this.move(1); };
         nav.append(prev_btn, next_btn);
         this.container.appendChild(nav);
     };
     ImageCarousel.prototype.move = function (direction) {
-        var _this = this;
-        var old_idx = this.curr_idx;
+        this.slide_elements[this.curr_idx].classList.remove("active");
         this.curr_idx =
             (this.curr_idx + direction + this.slides.length) %
                 this.slides.length;
-        this.slide_elements.forEach(function (el, idx) {
-            el.classList.remove("active", "prev-slide");
-            if (idx === _this.curr_idx) {
-                el.classList.add("active");
-            }
-            else if (idx === old_idx ||
-                (direction > 0 && idx < _this.curr_idx) ||
-                (direction < 0 && idx > _this.curr_idx)) {
-                el.classList.add("prev-slide");
-            }
-        });
+        this.slide_elements[this.curr_idx].classList.add("active");
     };
     return ImageCarousel;
 }());
+function randomize_case(input) {
+    return Array.from(input)
+        .map(function (char) {
+        return Math.random() < 0.5 ? char.toLowerCase() : char.toUpperCase();
+    })
+        .join("");
+}
+function animate_title(base_title, interval_ms) {
+    if (interval_ms === void 0) { interval_ms = 200; }
+    var interval_id = setInterval(function () {
+        document.title = randomize_case(base_title);
+    }, interval_ms);
+    return function () {
+        clearInterval(interval_id);
+        document.title = base_title;
+    };
+}
+var stop_title_anim = animate_title("the motherfucking bearodactyl", 100);
 var things_i_like = [
-    { src: "./assets/reggie.png", caption: "Reggie (of course)" },
-    { src: "./assets/rust.gif", caption: "Rust (the language)" },
-    { src: "./assets/spaghetti.png", caption: "Spaghetti" },
+    { src: "./assets/images/reggie.png", caption: "Reggie (of course)" },
+    { src: "./assets/images/rust.gif", caption: "Rust (the language)" },
+    { src: "./assets/images/spaghetti.png", caption: "Spaghetti" },
 ];
 document.addEventListener("DOMContentLoaded", function () {
     new ImageCarousel("things-i-like", things_i_like);
